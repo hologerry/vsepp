@@ -113,7 +113,8 @@ def main(data_path, data_name):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', default='/w/31/faghri/vsepp_data/')
+    # parser.add_argument('--data_path', default='/data1/gaoy/vsepp_data/data')
+    parser.add_argument('--data_path', default='/media/gerry/Data_2/vsepp_data/data')
     parser.add_argument('--data_name', default='coco',
                         help='{coco,f8k,f30k,10crop}_precomp|coco|f8k|f30k')
     opt = parser.parse_args()

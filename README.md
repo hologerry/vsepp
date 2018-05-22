@@ -38,7 +38,7 @@ directory.
 ```python
 from vocab import Vocabulary
 import evaluation
-evaluation.evalrank("$RUN_PATH/coco_vse++/model_best.pth.tar", data_path="$DATA_PATH", split="test")'
+evaluation.evalrank("$RUN_PATH/coco_vse++/model_best.pth.tar", data_path="$DATA_PATH", split="test")
 ```
 
 To do cross-validation on MSCOCO, pass `fold5=True` with a model trained using 
@@ -48,8 +48,7 @@ To do cross-validation on MSCOCO, pass `fold5=True` with a model trained using
 Run `train.py`:
 
 ```bash
-python train.py --data_path "$DATA_PATH" --data_name coco_precomp --logger_name 
-runs/coco_vse++ --max_violation
+python train.py --data_path "$DATA_PATH" --data_name coco_precomp --logger_name save/coco_vse++ --max_violation reset_train
 ```
 
 Arguments used to train pre-trained models:

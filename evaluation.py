@@ -57,7 +57,7 @@ class LogCollector(object):
         """Concatenate the meters in one log line
         """
         s = ''
-        for i, (k, v) in enumerate(self.meters.iteritems()):
+        for i, (k, v) in enumerate(self.meters.items()):
             if i > 0:
                 s += '  '
             s += k + ' ' + str(v)
@@ -66,7 +66,7 @@ class LogCollector(object):
     def tb_log(self, tb_logger, prefix='', step=None):
         """Log using tensorboard
         """
-        for k, v in self.meters.iteritems():
+        for k, v in self.meters.items():
             tb_logger.log_value(prefix + k, v.val, step=step)
 
 
@@ -126,12 +126,19 @@ def evalrank(model_path, data_path=None, split='dev', fold5=False):
     cross-validation is done (only for MSCOCO). Otherwise, the full data is
     used for evaluation.
     """
+    print(model_path)
+    print(data_path)
     # load model and options
     checkpoint = torch.load(model_path)
     opt = checkpoint['opt']
     if data_path is not None:
         opt.data_path = data_path
 
+    opt.vocab_path = './vocab/'
+
+    print(opt.data_path)
+    print(opt.vocab_path)
+    print(opt.data_name)
     # load vocabulary used by the model
     with open(os.path.join(opt.vocab_path,
                            '%s_vocab.pkl' % opt.data_name), 'rb') as f:
@@ -209,7 +216,7 @@ def i2t(images, captions, npts=None, measure='cosine', return_ranks=False):
     Captions: (5N, K) matrix of captions
     """
     if npts is None:
-        npts = images.shape[0] / 5
+        npts = images.shape[0] // 5
     index_list = []
 
     ranks = numpy.zeros(npts)
@@ -262,7 +269,7 @@ def t2i(images, captions, npts=None, measure='cosine', return_ranks=False):
     Captions: (5N, K) matrix of captions
     """
     if npts is None:
-        npts = images.shape[0] / 5
+        npts = images.shape[0] // 5
     ims = numpy.array([images[i] for i in range(0, len(images), 5)])
 
     ranks = numpy.zeros(5 * npts)

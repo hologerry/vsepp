@@ -19,7 +19,7 @@ import argparse
 def main():
     # Hyper Parameters
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_path', default='/w/31/faghri/vsepp_data/',
+    parser.add_argument('--data_path', default='/data1/gaoy/vsepp_data/',
                         help='path to datasets')
     parser.add_argument('--data_name', default='precomp',
                         help='{coco,f8k,f30k,10crop}_precomp|coco|f8k|f30k')

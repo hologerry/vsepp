@@ -2,10 +2,11 @@ import torch
 import torch.nn as nn
 import torch.nn.init
 import torchvision.models as models
-from torch.autograd import Variable
+# from torch.autograd import Variable
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 import torch.backends.cudnn as cudnn
-from torch.nn.utils.clip_grad import clip_grad_norm
+# from torch.nn.utils.clip_grad import clip_grad_norm
+
 import numpy as np
 from collections import OrderedDict
 
@@ -214,7 +215,7 @@ class EncoderText(nn.Module):
         # Reshape *final* output to (batch_size, hidden_size)
         padded = pad_packed_sequence(out, batch_first=True)
         I = torch.LongTensor(lengths).view(-1, 1, 1)
-        I = Variable(I.expand(x.size(0), 1, self.embed_size)-1).cuda()
+        I = (I.expand(x.size(0), 1, self.embed_size)-1).cuda()
         out = torch.gather(padded[0], 1, I).squeeze(1)
 
         # normalization in the joint embedding space
@@ -273,7 +274,8 @@ class ContrastiveLoss(nn.Module):
 
         # clear diagonals
         mask = torch.eye(scores.size(0)) > .5
-        I = Variable(mask)
+        # I = Variable(mask)
+        I = mask
         if torch.cuda.is_available():
             I = I.cuda()
         cost_s = cost_s.masked_fill_(I, 0)
@@ -346,8 +348,8 @@ class VSE(object):
         """Compute the image and caption embeddings
         """
         # Set mini-batch dataset
-        images = Variable(images, volatile=volatile)
-        captions = Variable(captions, volatile=volatile)
+        # images = Variable(images, volatile=volatile)
+        # captions = Variable(captions, volatile=volatile)
         if torch.cuda.is_available():
             images = images.cuda()
             captions = captions.cuda()
@@ -381,5 +383,5 @@ class VSE(object):
         # compute gradient and do SGD step
         loss.backward()
         if self.grad_clip > 0:
-            clip_grad_norm(self.params, self.grad_clip)
+            nn.utils.clip_grad_norm_(self.params, self.grad_clip)
         self.optimizer.step()
